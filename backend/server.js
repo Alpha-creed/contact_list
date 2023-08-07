@@ -9,7 +9,7 @@ const {readdirSync} = require('fs')
 require("dotenv").config()
 const PORT = process.env.PORT
 
-//middleware
+//middleware 
 app.use(cors(corsOptions))
 app.use(express.json())
 
