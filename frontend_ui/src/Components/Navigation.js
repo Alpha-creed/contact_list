@@ -4,11 +4,13 @@ import Home from './Home'
 import Create from './Create'
 import Update from './Update'
 import View from './View'
+import Header from './Header'
 
 
 const Navigation = () => {
   return (
     <BrowserRouter>
+    <Header/>
       <Routes>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/new-contact' element={<Create/>}></Route>

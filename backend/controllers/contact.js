@@ -15,21 +15,27 @@ exports.addContact = async (req,res)=>{
     })
 
     try {
+        console.log(contact);
+
         //Validations
-        if(!name || !phone || !email ||!Company||!Title||!Group|| !avatar){
+        if(!name || !phone || !email ||!Company||!Title||!Group||!avatar){
             return res.status(400).json({message:"All fields are required"});
         }
-        if(!phone === 'number'){
-            return res.status(400).json({message:'The phone section should be number'})
-        }
-        await contact.save()
+       
+        await contact.save();
+        // await contact.save((err,user)=>{
+        //     if(err){
+        //         res.status(400).send({error:err})
+        //     }else{
+        //         res.status(200).send({data:contact})
+        //     } 
+        // })
         res.status(200).json({message:'Contact Added'})
     } catch (error) {
-        res.status(500).json({message:'Server Error'})    
+        res.status(500).json({message:'Server Error',error})    
     }
-    console.log(contact);
 }
-
+ 
 exports.getContact = async(req,res)=>{
     try {
         const contacts = await ContactSchema.find().sort({createdAt:-1})
@@ -49,3 +55,15 @@ exports.deleteContact = async (req,res)=>{
             res.status(500).json({message:'Server Error'})
         })
 }
+
+exports.UpdateContact = async (req,res)=>{
+    const {id} = req.params;
+    ContactSchema.findByIdAndUpdate(id)
+        .then((contact)=>{
+            res.status(200).json({message:'Contact Updated'})
+        })
+        .catch((err)=>{
+            res.status(500).json({message:'Server Error'})
+        })
+}
+

@@ -3,7 +3,7 @@ import Header from './Header'
 import { newIcon } from '../utils/assest'
 import Btn from './elements/Button'
 import ViewItem from './ViewItem'
-import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap'
+import { Button, Col, Form, Container, Row } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Home = () => {
@@ -18,10 +18,7 @@ const Home = () => {
         alignItems:'center',
         margin:"40px 0"
     }
-    const myCont={
-        marginLeft:'120px',
 
-    }
     const customInput={
         width: '500px',      // Adjust the width as needed
     height: '45px',      // Adjust the height as needed
@@ -44,9 +41,7 @@ const Home = () => {
     },[])
 
   return (
-    <div>
-        <Header/>
-    <div style={myCont}>
+    <Container>
         <div style={myHead}>
       <h2>Phone Directory</h2>
     <Btn icon={newIcon} name={"New"} bg={"green"} color={"white"} marg={"20px 10px"} onClick={()=>navigate("/new-contact")}/>    
@@ -76,8 +71,7 @@ const Home = () => {
             })
         }
       </Row>
-      </div>
-      </div>
+      </Container>
   )
 }
 
