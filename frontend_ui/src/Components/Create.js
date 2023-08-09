@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import { Col, Container, Form } from 'react-bootstrap'
 import Btn from './elements/Button'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate,Link} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { createContact } from '../redux/features/contactSlice'
 
@@ -19,13 +19,12 @@ const Create = () => {
     Group:"",
   })
   const [showContact,setShowContact] = useState(false)
-   
+  
   const navigate=useNavigate()
   const dispatch = useDispatch()
   const {loading,contact} = useSelector((state)=>({...state.contact}))
- 
+  const refresh=()=>window.location.reload(true)
   const handleSubmit=(e)=>{
-    e.preventDefault()
    dispatch(createContact({values}))
     setValues({
       name:"",
@@ -37,15 +36,15 @@ const Create = () => {
       Group:"",
     })
     setShowContact(true)
-    console.log(values)
+    refresh()
   }
   return (
-    <Container onSubmit={handleSubmit}>
+    <Container >
       <h2 style={{color:'green'}}>Create Contact</h2>
       <p>
       Liet telt zoo veel zoo elk lang ter iets. Gezegend kolonist lot rug genoemde weg dikwijls laatsten. Ketting dik tienden luister zij van meestal. Zes met dik tin rijken hoopen tonnen. Snelleren nabijheid gif een inlandsen dit onzuivere sultanaat.
       </p>
-      <Form>
+      <Form >
         <Col md={4}>
         <Form.Control 
           type="text" 
@@ -103,7 +102,7 @@ const Create = () => {
           <option value='Social'>Social</option>
         </Form.Select>
         </Col>
-        <Btn  type ="submit" name={'Create'} bg={'green'} color={'white'} marg={'20px 10px'} onClick={()=>loading==false?console.log("it works",dispatch(createContact({values}))):console.log("Didnt run")}/>
+        <Btn  type ="submit" name={'Create'} bg={'green'} color={'white'} marg={'20px 10px'} onClick={()=>loading==false?handleSubmit():navigate("/")}/>
         <Btn name={'Cancel'} bg={'black'} color={'white'} marg={'20px 30px'} onClick={()=>navigate("/")}/>
       </Form>
     </Container>

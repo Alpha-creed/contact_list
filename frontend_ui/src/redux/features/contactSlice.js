@@ -6,90 +6,49 @@ export const getContact = createAsyncThunk('contact/getContacts',async ({id})=>{
     return res.data;
 })
 
-// export const createContact = createAsyncThunk('users/createContact',async({values})=>{
-//     let config={
-//         headers:{
-//             "Content-type":"application/json",
-//         }
-//     }
-//     let body = JSON.stringify({
-//         name:values.name,
-//         image:values.image,
-//         phone:values.phone,
-//         email:values.email,
-//         Company:values.Company,
-//         Title:values.Title,
-//         Group:values.Group,
-//     })
-//     const res = await axios.post('http://localhost:5000/api/add-contact/',body)
-//     console.log(res.data);
-//     return res.data;
-  
-// })
-
-// const response = await fetch('http://localhost:5000/api/add-contact', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({ 
-//         name:values.name,
-//         image:values.image,
-//         phone:values.phone,
-//         email:values.email,
-//         Company:values.Company,
-//         Title:values.Title,
-//         Group:values.Group,
-//      }),
-//   });
-
-//   if (response.ok) {
-//     console.log('Contact added successfully');
-//     // Handle success
-//   } else {
-//     console.error('Failed to add contact');
-//     // Handle error
-//   }
-// };
-
-export const createContact = createAsyncThunk('contact/addContact', async (values) => {
-    try {
-      const response = await fetch('http://localhost:5000/add-contact/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to add contact');
-      }
-  
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      throw error;
+export const createContact = createAsyncThunk('contact/createContact',async({values})=>{
+    let config={
+        headers:{
+            "Content-type":"application/json",
+            
+        }
     }
-  });
+    let body = JSON.stringify({
+        name:values.name,
+        phone:values.phone,
+        email:values.email,
+        Company:values.Company,
+        Title:values.Title,
+        Group:values.Group,
+        avatar:values.image,
+    })
+    const res = await axios.post('http://localhost:5000/api/add-contact',body,config)
+    console.log(res.data);
+    return res.data;
+  
+})
 
-export const updateContact = createAsyncThunk("contact/updateContact",async({id,data})=>{
+
+
+export const updateContact = createAsyncThunk("contact/updateContact",async(data)=>{
+    const { id, ...values } = data;
     let config={
         headers:{
             "Content-type":"application/json",
         }
-    }
-    let body = JSON.stringify({
-        name:data.name,
-        image:data.image,
-        phone:data.phone,
-        email:data.email,
-        Company:data.Company,
-        Title:data.Title,
-        Group:data.Group,
-    })
+    },
+    body= JSON.stringify(values)
+    // let body = JSON.stringify({
+    //     name:values.name,
+    //     phone:values.phone,
+    //     email:values.email,
+    //     Company:values.Company,
+    //     Title:values.Title,
+    //     Group:values.Group,
+    //     avatar:values.image,
+    // })
     const res = await axios.put(`http://localhost:5000/api/update-contact/${id}`,body,config)
-    return res.data;
+    return res.id;
 })
 
 
@@ -112,17 +71,6 @@ const contactSlice = createSlice({
     initialState,
     reducers:{},
     extraReducers:{
-        [getContact.pending]:(state,action)=>{
-            state.loading="true"
-        },
-        [getContact.fulfilled]:(state,action)=>{
-            state.loading='false';
-            state.contact=[action.payload];
-        },
-        [getContact.rejected]:(state,action)=>{
-            state.loading='false';
-            state.error = action.error;
-        },
         [createContact.pending]:(state,action)=>{
             state.loading="true"
         },
@@ -134,21 +82,39 @@ const contactSlice = createSlice({
             state.loading='false';
             state.error = action.error;
         },
-        // builder.addCase(createContact.pending,(state,action)=>{
-        //     state.status = "pending"
-        //     state.loading='true';
-  
-        // });
-        // builder.addCase(createContact.fulfilled,(state,action)=>{
-        //     state.status = "fulfilled"
-        //     state.loading='false';
-        //     state.contact=[...action.payload.data]
-        // });
-        // builder.addCase(createContact.rejected,(state,action)=>{
-        //     state.status = "rejected"
-        //     state.loading='false';
-        //     state.contact=[...action.payload]
-        // });
+        [getContact.pending]:(state,action)=>{
+            state.loading="true"
+        },
+        [getContact.fulfilled]:(state,action)=>{
+            state.loading='false';
+            state.contact=[action.payload];
+        },
+        [getContact.rejected]:(state,action)=>{
+            state.loading='false';
+            state.error = action.error;
+        },
+        [updateContact.pending]:(state,action)=>{
+            state.loading="true"
+        },
+        [updateContact.fulfilled]:(state,action)=>{
+            state.loading='false';
+            state.contact=[action.payload];
+        },
+        [updateContact.rejected]:(state,action)=>{
+            state.loading='false';
+            state.error = action.error;
+        },
+        [deleteContact.pending]:(state,action)=>{
+            state.loading="true"
+        },
+        [deleteContact.fulfilled]:(state,action)=>{
+            state.loading='false';
+            state.contact=[action.payload];
+        },
+        [deleteContact.rejected]:(state,action)=>{
+            state.loading='false';
+            state.error = action.error;
+        },
     },
 });
 

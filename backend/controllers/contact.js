@@ -23,13 +23,7 @@ exports.addContact = async (req,res)=>{
         }
        
         await contact.save();
-        // await contact.save((err,user)=>{
-        //     if(err){
-        //         res.status(400).send({error:err})
-        //     }else{
-        //         res.status(200).send({data:contact})
-        //     } 
-        // })
+   
         res.status(200).json({message:'Contact Added'})
     } catch (error) {
         res.status(500).json({message:'Server Error',error})    
@@ -57,13 +51,22 @@ exports.deleteContact = async (req,res)=>{
 }
 
 exports.UpdateContact = async (req,res)=>{
-    const {id} = req.params;
-    ContactSchema.findByIdAndUpdate(id)
-        .then((contact)=>{
-            res.status(200).json({message:'Contact Updated'})
-        })
-        .catch((err)=>{
-            res.status(500).json({message:'Server Error'})
-        })
+    // const {id} = req.params;
+    try{
+    const {name,phone,email,Company,Title,Group,avatar} = req.body
+    const updatedContact = await ContactSchema.findByIdAndUpdate(
+        req.params.id,
+        {name,phone,email,Company,Title,Group,avatar},
+        {new :true}
+    );
+
+    if (!updatedContact) {
+        return res.status(404).json({ error: 'Contact not found' });
+      }
+    res.json({ id: updatedContact._id });
+}catch(err){
+    res.status(500).json({ error: 'An error occurred' });
+}    
+    
 }
 

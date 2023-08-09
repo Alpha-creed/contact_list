@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 
 export default  configureStore({
     reducer:{
-        contact:contactReducer,
+        contact:contactReducer
     }},
     applyMiddleware(thunk)
 )
