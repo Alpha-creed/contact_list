@@ -4,7 +4,7 @@ import Btn from './elements/Button'
 import {Link} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-const ViewItem = ({contact,del,view,edit}) => {
+const ViewItem = ({Contacts,del,view,edit}) => {
     const myCont={
         padding:"10px",
         display:'flex',
@@ -29,22 +29,22 @@ const ViewItem = ({contact,del,view,edit}) => {
         flexDirection: 'column',
     }
 
-    const {loading,error,contactId} = useSelector(state => state.contact);
+    const {loading,error,contact} = useSelector(state => state.contact);
 
     return (
       <div style={{display:'flex',justifyContent:"space-evenly"}}>
     <div style={myCont}>
       <div>
-        <img src={contact.avatar} alt={contact.name} style={img}/>
+        <img src={Contacts.avatar} alt={Contacts.name} style={img}/>
       </div>
       <div>
-        <p>Name: {contact.name}</p>
-        <p>Mobile: {contact.phone}</p>
-        <p>Email: {contact.email}</p>
+        <p>Name: {Contacts.name}</p>
+        <p>Mobile: {Contacts.phone}</p>
+        <p>Email: {Contacts.email}</p>
       </div>
       <div style={myBtn}>
-        <Btn  marg={"2px"} icon={viewIcon} bg={'yellow'} color={'black'} onClick={view}/>
-       <Link to={`/update-contact/${contactId}`}><Btn marg={"2px"} icon={editIcon} bg={'blue'} color={'white'} onClick={edit}/></Link>
+      <Link to={`/view/${Contacts._id}`}> <Btn  marg={"2px"} icon={viewIcon} bg={'yellow'} color={'black'} onClick={view}/></Link>
+       <Link to={`/update-contact/${Contacts._id}`}><Btn marg={"2px"} icon={editIcon} bg={'blue'} color={'white'} onClick={edit}/></Link>
         <Btn  marg={"2px"} icon={deleteIcon} bg={'red'} color={'white'} onClick={del}/> 
       </div>
     </div>

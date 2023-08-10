@@ -24,7 +24,7 @@ export const createContact = createAsyncThunk('contact/createContact',async({val
     })
     const res = await axios.post('http://localhost:5000/api/add-contact',body,config)
     console.log(res.data);
-    return res.data;
+    return  res._id;
   
 })
 
@@ -48,7 +48,7 @@ export const updateContact = createAsyncThunk("contact/updateContact",async(data
     //     avatar:values.image,
     // })
     const res = await axios.put(`http://localhost:5000/api/update-contact/${id}`,body,config)
-    return res.id;
+    return res._id;
 })
 
 
@@ -64,12 +64,18 @@ const initialState={
     error:null,
     status:"idle",
     // edit:false,
+    selectedContact:null,
 }
 
 const contactSlice = createSlice({
     name:'contact',
     initialState,
-    reducers:{},
+    reducers:{
+        setSelectedContact: (state, action) => {
+            const selectedId = action.payload;
+            state.selectedContact = state.contact.find(contact => contact.id === selectedId);
+          },
+    },
     extraReducers:{
         [createContact.pending]:(state,action)=>{
             state.loading="true"
@@ -77,6 +83,7 @@ const contactSlice = createSlice({
         [createContact.fulfilled]:(state,action)=>{
             state.loading='false';
             state.contact=[action.payload];
+            state.contactId = [action.payload];
         },
         [createContact.rejected]:(state,action)=>{
             state.loading='false';
@@ -119,4 +126,4 @@ const contactSlice = createSlice({
 });
 
 export default contactSlice.reducer;
-
+export const {setSelectedContact} = contactSlice.actions

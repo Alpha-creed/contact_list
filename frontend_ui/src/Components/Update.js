@@ -3,51 +3,62 @@ import { Col, Container, Form } from 'react-bootstrap'
 import Btn from './elements/Button'
 import {useNavigate,Link,useParams} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { createContact, updateContact } from '../redux/features/contactSlice'
+import { createContact, updateContact ,selectedContact} from '../redux/features/contactSlice'
 
 const Update = () => {
   const custFormControl={
     margin:'20px 0'
   }
-  // const{id} = useParams();
-  // const users = useSelector((state)=>state.contact);
-  const {loading,error,contactId} = useSelector(state => state.contact);
-  // const existingUser = users.filter(f=>f.id == id);
-  // const {loading,name,phone,email,Company,Title,Group,avatar} = existingUser[0];
-  // const [values,setValues] = useState({
-  //   uname:name,
-  //   uimage:avatar,
-  //   uphone:phone,
-  //   uemail:email,
-  //   uCompany:Company,
-  //   uTitle:Title,
-  //   uGroup:Group,
-  // })
+  // const [setContactId,ContactId] = useState();
+  const{id} = useParams();
+  const users = useSelector((state)=>state.contact);
+  const {loading,error,contact} = useSelector(state => state.contact);
+  const existingUser = users.contact.filter(f=>f.id == id);
+  const {name,phone,email,Company,Title,Group,avatar} = existingUser[0];
   const [values,setValues] = useState({
-    name:"",
-    image:"",
-    phone:"",
-    email:"",
-    Company:"",
-    Title:"",
-    Group:"",
+    uname:name,
+    uimage:avatar,
+    uphone:phone,
+    uemail:email,
+    uCompany:Company,
+    uTitle:Title,
+    uGroup:Group,
   })
+  // const [values,setValues] = useState({
+  //   name:"",
+  //   image:"",
+  //   phone:"",
+  //   email:"",
+  //   Company:"",
+  //   Title:"",
+  //   Group:"",
+  // })
 
   const dispatch = useDispatch()
   const navigate = useNavigate();
 
-  const handleUpdate = (e)=>{
+    // const handleSelected = (contactId)=>{
+    //   dispatch(selectedContact(contactId))
+    // }
+  const handleUpdate =async (e)=>{
       e.preventDefault();
-      // dispatch(updateContact({
-      //   name:values.uname,
-      //   avatar:values.uImage,
-      //   phone:values.uPhone,
-      //   email:values.uEmail,
-      //   Company:values.uCompany,
-      //   Title:values.uTitle,
-      //   Group:values.uGroup,
-      // }))
-      dispatch(updateContact({id:contactId,...values}))
+      dispatch(updateContact({
+        name:values.uname,
+        avatar:values.uimage,
+        phone:values.uphone,
+        email:values.uemail,
+        Company:values.uCompany,
+        Title:values.uTitle,
+        Group:values.uGroup,
+      }))
+      // if(contact){
+      // dispatch(updateContact({id:contact._id,...values}))
+      // }else{
+      //   const newContactId = await dispatch(createContact(values));
+      //   if (newContactId) {
+      //     newContactId(newContactId); // Store the generated _id
+      //   }
+      // }
       navigate("/")
   }
   return (
@@ -62,48 +73,48 @@ const Update = () => {
         type="text" 
         placeholder="Name" 
         style={custFormControl}
-        onChange={(e)=>setValues({...values,name:e.target.value})}
-        value={values.name}
+        onChange={(e)=>setValues.uname(e.target.value)}
+        value={values.uname}
         />
 
       <Form.Control 
         type="text"  
         placeholder="Photo Url" 
         style={custFormControl}
-        onChange={(e)=>setValues({...values,image:e.target.value})}
-        value={values.image}/>
+        onChange={(e)=>setValues.uImage(e.target.value)}
+        value={values.uimage}/>
 
       <Form.Control 
         type="text" 
         placeholder="Mobile" 
         style={custFormControl}
-        onChange={(e)=>setValues({...values,phone:e.target.value})}
-        value={values.phone}/>
+        onChange={(e)=>setValues.uphone(e.target.value)}
+        value={values.uphone}/>
 
       <Form.Control 
         type="email" 
         placeholder="Email" 
         style={custFormControl}
-        onChange={(e)=>setValues({...values,email:e.target.value})}
-        value={values.email}/>
+        onChange={(e)=>setValues.uemail(e.target.value)}
+        value={values.uemail}/>
 
       <Form.Control 
         type="text" 
         placeholder="Company" 
         style={custFormControl}
-        onChange={(e)=>setValues({...values,Company:e.target.value})}
-        value={values.Company}/>
+        onChange={(e)=>setValues.uCompany(e.target.value)}
+        value={values.uCompany}/>
 
       <Form.Control 
         type="text" 
         placeholder="Title" 
         style={custFormControl}
-        onChange={(e)=>setValues({...values,Title:e.target.value})}
-        value={values.Title}/>
+        onChange={(e)=>setValues.uTitle(e.target.value)}
+        value={values.uTitle}/>
 
       <Form.Select
-        onChange={(e)=>setValues({...values,Group:e.target.value})}
-        value={values.Group}
+        onChange={(e)=>setValues.uGroup(e.target.value)}
+        value={values.uGroup}
       >
         <option>Group by...</option>
         <option value='Collegue'>Collegue</option>
@@ -117,8 +128,8 @@ const Update = () => {
       <Btn  type ="submit" name={'Update'} bg={'green'} color={'white'} marg={'20px 10px'} onClick={()=>loading==false?console.log("Updated"):navigate("/")} />
       <Btn name={'Cancel'} bg={'black'} color={'white'} marg={'20px 30px'} onClick={()=>navigate("/")}/>
     </Form>
-    {contactId && <p>Updated Contact ID: {contactId}</p>}
-    {error && <p>{error}</p>}
+    {users._id && <p>Updated Contact ID: {users._id}</p>}
+    {/* {error && <p>{error}</p>} */}
   </Container>
 
   )

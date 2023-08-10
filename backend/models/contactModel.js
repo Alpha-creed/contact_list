@@ -13,6 +13,6 @@ const ContactSchema = new Schema(
     },{
         timestamps:true
     }
-)
+) 
 
 module.exports = mongoose.model('Contact',ContactSchema)

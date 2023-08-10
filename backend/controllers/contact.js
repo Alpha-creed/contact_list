@@ -21,10 +21,9 @@ exports.addContact = async (req,res)=>{
         if(!name || !phone || !email ||!Company||!Title||!Group||!avatar){
             return res.status(400).json({message:"All fields are required"});
         }
-       
-        await contact.save();
+       const savedContact =await contact.save();
+       res.json({ id: savedContact._id });
    
-        res.status(200).json({message:'Contact Added'})
     } catch (error) {
         res.status(500).json({message:'Server Error',error})    
     }
@@ -53,7 +52,7 @@ exports.deleteContact = async (req,res)=>{
 exports.UpdateContact = async (req,res)=>{
     // const {id} = req.params;
     try{
-    const {name,phone,email,Company,Title,Group,avatar} = req.body
+    const {_id,name,phone,email,Company,Title,Group,avatar} = req.body
     const updatedContact = await ContactSchema.findByIdAndUpdate(
         req.params.id,
         {name,phone,email,Company,Title,Group,avatar},

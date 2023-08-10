@@ -5,10 +5,14 @@ import Btn from './elements/Button'
 import ViewItem from './ViewItem'
 import { Button, Col, Form, Container, Row } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
+import {getContact, setSelectedContact} from '../redux/features/contactSlice'
+import {useDispatch,useSelector} from 'react-redux'
 
 const Home = () => {
     const [contact,setContacts] = useState([]);
     const navigate=useNavigate()
+    const dispatch = useDispatch();
+
     const myHead ={
         display:'flex',
         alignItems:'center',
@@ -25,6 +29,7 @@ const Home = () => {
     fontSize: '15px',    // Adjust the font size as needed
     padding: '4px 8px',
     }
+    const users = useSelector(getContact());
 
     useEffect(()=>{
         async function fetchdata(){
@@ -32,6 +37,7 @@ const Home = () => {
                 const res= await fetch("http://localhost:5000/api/get-contacts");            
                 const contact_list = await res.json();
                 console.log(contact_list);
+                console.log(users.contact);
                 setContacts(contact_list);
             }catch(error){
                 console.log(error);
@@ -39,6 +45,7 @@ const Home = () => {
         }
             fetchdata();
     },[])
+
 
   return (
     <Container>
@@ -64,7 +71,7 @@ const Home = () => {
                 return(
                     <Col key={index} md={5}>
                     <div >
-                        <ViewItem key={index} contact={cont}/>
+                        <ViewItem key={index} Contacts={cont} edit={cont._id}/>
                     </div>
                     </Col>
                 )

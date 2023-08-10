@@ -5,6 +5,7 @@ import Create from './Create'
 import Update from './Update'
 import View from './View'
 import Header from './Header'
+import ContactDetail from './ContactDetail'
 
 
 const Navigation = () => {
@@ -15,7 +16,7 @@ const Navigation = () => {
         <Route path='/' element={<Home/>}></Route>
         <Route path='/new-contact' element={<Create/>}></Route>
         <Route path='/update-contact/:id' element={<Update/>}></Route>
-        <Route path='/view/:id' element={<View/>}></Route>
+        <Route path='/view/:id' element={<ContactDetail/>}></Route>
       </Routes>
     </BrowserRouter>
   )
