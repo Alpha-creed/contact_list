@@ -47,7 +47,7 @@ exports.deleteContact = async (req,res)=>{
         .catch((err)=>{
             res.status(500).json({message:'Server Error'})
         })
-}
+} 
 
 exports.UpdateContact = async (req,res)=>{
     // const {id} = req.params;

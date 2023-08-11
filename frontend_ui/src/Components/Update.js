@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { Col, Container, Form } from 'react-bootstrap'
 import Btn from './elements/Button'
 import {useNavigate,Link,useParams} from 'react-router-dom'
@@ -11,18 +11,36 @@ const Update = () => {
   }
   // const [setContactId,ContactId] = useState();
   const{id} = useParams();
-  const users = useSelector((state)=>state.contact);
-  const {loading,error,contact} = useSelector(state => state.contact);
-  const existingUser = users.contact.filter(f=>f.id == id);
-  const {name,phone,email,Company,Title,Group,avatar} = existingUser[0];
+  const users = useSelector((state)=>state.contact.contact);
+    const existingUser = users.filter(f=>f.id == id);
+  const {name,phone,email,Company,Title,Group,avatar} = existingUser; 
+  // const [uname,setuname] = useState("");
+  // const [uphone,setuphone] = useState("");
+  // const [uemail,setuemail] = useState("");
+  // const [uCompany,setuCompany] = useState("");
+  // const [uTitle,setuTitle] = useState("");
+  // const [uGroup,setuGroup] = useState("");
+  // const [uavatar,setuavatar] = useState("");
+
+
+
+
+  // if (users && Array.isArray(users)) {
+  //   const filteredUsers = users.filter(user => user.name === 'Alice');
+  // } else {
+  //   console.log('Users data is undefined or not an array');
+  // }
+  // const {loading,error,contact} = useSelector(state => state.contact);
+  // const existingUser = users.filter(f=>f.id == id);
+  // const {name,phone,email,Company,Title,Group,avatar} = existingUser[0]; 
   const [values,setValues] = useState({
-    uname:name,
-    uimage:avatar,
-    uphone:phone,
-    uemail:email,
-    uCompany:Company,
-    uTitle:Title,
-    uGroup:Group,
+    uname:"",
+    uimage:"",
+    uphone:"",
+    uemail:"",
+    uCompany:"",
+    uTitle:"",
+    uGroup:"",
   })
   // const [values,setValues] = useState({
   //   name:"",
@@ -33,6 +51,19 @@ const Update = () => {
   //   Title:"",
   //   Group:"",
   // })
+useEffect(()=>{
+  const contact = users.find(contact=>contact.id===id)
+  if(contact){
+    setValues.uname(contact.name)
+    setValues.uimage(contact.image)
+    setValues.uphone(contact.phone)
+    setValues.uemail(contact.email)
+    setValues.uCompany(contact.Company)
+    setValues.uTitle(contact.Title)
+    setValues.uGroup(contact.Group)
+  }
+  console.log(id,contact,users,existingUser)
+},[id,users])
 
   const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -81,7 +112,7 @@ const Update = () => {
         type="text"  
         placeholder="Photo Url" 
         style={custFormControl}
-        onChange={(e)=>setValues.uImage(e.target.value)}
+        onChange={(e)=>setValues.uimage(e.target.value)}
         value={values.uimage}/>
 
       <Form.Control 
@@ -125,13 +156,13 @@ const Update = () => {
         <option value='Social'>Social</option>
       </Form.Select>
       </Col>
-      <Btn  type ="submit" name={'Update'} bg={'green'} color={'white'} marg={'20px 10px'} onClick={()=>loading==false?console.log("Updated"):navigate("/")} />
+      <Btn  type ="submit" name={'Update'} bg={'green'} color={'white'} marg={'20px 10px'}/* onClick={()=>loading==false?console.log("Updated"):navigate("/")}*/ />
       <Btn name={'Cancel'} bg={'black'} color={'white'} marg={'20px 30px'} onClick={()=>navigate("/")}/>
     </Form>
-    {users._id && <p>Updated Contact ID: {users._id}</p>}
+    {/* {users._id && <p>Updated Contact ID: {users._id}</p>} */}
     {/* {error && <p>{error}</p>} */}
   </Container>
-
+ 
   )
 }
 

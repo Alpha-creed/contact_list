@@ -31,7 +31,7 @@ export const createContact = createAsyncThunk('contact/createContact',async({val
 
 
 export const updateContact = createAsyncThunk("contact/updateContact",async(data)=>{
-    const { id, ...values } = data;
+    const { _id, ...values } = data;
     let config={
         headers:{
             "Content-type":"application/json",
@@ -47,8 +47,8 @@ export const updateContact = createAsyncThunk("contact/updateContact",async(data
     //     Group:values.Group,
     //     avatar:values.image,
     // })
-    const res = await axios.put(`http://localhost:5000/api/update-contact/${id}`,body,config)
-    return res._id;
+    const res = await axios.put(`http://localhost:5000/api/update-contact/${_id}`,body,config)
+    return res.data;
 })
 
 
@@ -72,9 +72,39 @@ const contactSlice = createSlice({
     initialState,
     reducers:{
         setSelectedContact: (state, action) => {
-            const selectedId = action.payload;
-            state.selectedContact = state.contact.find(contact => contact.id === selectedId);
+            const {_id} = action.payload;
+            state.selectedContact = state.contact.find(contact => contact.id === _id);
           },
+          addContacts:(state,action)=>{
+            state.push(action.payload)
+          },
+          updateContacts:(state,action)=>{
+            const{_id,name,phone,email,Company,Title,Group,avatar} = action.payload;
+            const uu = state.find(contact=>contact.id==_id)
+            if(uu){
+                uu.name = name;
+                uu.phone = phone;
+                uu.email=email;
+                uu.Company=Company;
+                uu.Title=Title;
+                uu.Group=Group;
+                uu.avatar=avatar
+            }
+          },
+          deleteContacts:(state,action)=>{
+            const {_id} = action.payload;
+            const uu = state.find(contact=>contact.id==_id);
+            if(uu){
+                return state.filter(f=>f.id !=_id);
+            }
+          },
+          setContacts:(state,action)=>{
+                return{
+                    ...state,
+                    contact:action.payload,
+                }
+          }
+
     },
     extraReducers:{
         [createContact.pending]:(state,action)=>{
@@ -126,4 +156,4 @@ const contactSlice = createSlice({
 });
 
 export default contactSlice.reducer;
-export const {setSelectedContact} = contactSlice.actions
+export const {setSelectedContact,addContacts,updateContacts,deleteContacts,setContacts} = contactSlice.actions
