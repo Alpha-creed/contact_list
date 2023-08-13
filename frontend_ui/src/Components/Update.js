@@ -3,149 +3,152 @@ import { Col, Container, Form } from 'react-bootstrap'
 import Btn from './elements/Button'
 import {useNavigate,Link,useParams} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { createContact, updateContact ,selectedContact} from '../redux/features/contactSlice'
+import {clearContacts, createContact,updateContact,clearErrors, selectContact, clearCurrent, updateContacts} from '../redux/features/contactSlice'
+
+
 
 const Update = () => {
+  const {id} = useParams()
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const allContacts = useSelector(state=>state.contact.contact);
+  const contacts = allContacts.find(u=>u.id===id)
   const custFormControl={
     margin:'20px 0'
   }
-  // const [setContactId,ContactId] = useState();
-  const{id} = useParams();
-  const users = useSelector((state)=>state.contact.contact);
-    const existingUser = users.filter(f=>f.id == id);
-  const {name,phone,email,Company,Title,Group,avatar} = existingUser; 
-  // const [uname,setuname] = useState("");
-  // const [uphone,setuphone] = useState("");
-  // const [uemail,setuemail] = useState("");
-  // const [uCompany,setuCompany] = useState("");
-  // const [uTitle,setuTitle] = useState("");
-  // const [uGroup,setuGroup] = useState("");
-  // const [uavatar,setuavatar] = useState("");
+    console.log(contacts);
+
+    useEffect(()=>{
+      if(contacts){
+      setValues({
+        id:id,
+        name:contacts.name,
+        avatar:contacts.avatar,
+        phone:contacts.phone,
+        email:contacts.email,
+        Company:contacts.Company,
+        Title:contacts.Title,
+        Group:contacts.Group,
+      })
+      }
+    },[contacts])
+// const [Name,setName] = useState(contacts.name)
+// const [avatar,setAvatar] = useState(contacts.avatar)
+// const [phone,setPhone] = useState(contacts.phone)
+// const [email,setEmail] = useState(contacts.email)
+// const [Company,setCompany] = useState(contacts.Company)
+// const [Title,setTitle] = useState(contacts.Title)
+// const [Group,setGroup] = useState(contacts.Group)
 
 
 
-
-  // if (users && Array.isArray(users)) {
-  //   const filteredUsers = users.filter(user => user.name === 'Alice');
-  // } else {
-  //   console.log('Users data is undefined or not an array');
-  // }
-  // const {loading,error,contact} = useSelector(state => state.contact);
-  // const existingUser = users.filter(f=>f.id == id);
-  // const {name,phone,email,Company,Title,Group,avatar} = existingUser[0]; 
   const [values,setValues] = useState({
-    uname:"",
-    uimage:"",
-    uphone:"",
-    uemail:"",
-    uCompany:"",
-    uTitle:"",
-    uGroup:"",
+    id:id,
+    name:"",
+    avatar:"",
+    phone:"",
+    email:"",
+    Company:"",
+    Title:"",
+    Group:"",
   })
-  // const [values,setValues] = useState({
-  //   name:"",
-  //   image:"",
-  //   phone:"",
-  //   email:"",
-  //   Company:"",
-  //   Title:"",
-  //   Group:"",
-  // })
-useEffect(()=>{
-  const contact = users.find(contact=>contact.id===id)
-  if(contact){
-    setValues.uname(contact.name)
-    setValues.uimage(contact.image)
-    setValues.uphone(contact.phone)
-    setValues.uemail(contact.email)
-    setValues.uCompany(contact.Company)
-    setValues.uTitle(contact.Title)
-    setValues.uGroup(contact.Group)
-  }
-  console.log(id,contact,users,existingUser)
-},[id,users])
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate();
+// useEffect(()=>{
+//   if(current){
+//     setValues(current)
+//   }else{
+//     setValues({
+//       name:"",
+//       avatar:"",
+//       phone:"",
+//       email:"",
+//       Company:"",
+//       Title:"",
+//       Group:"",
+//     })
+//   }
+// },[current])
 
-    // const handleSelected = (contactId)=>{
-    //   dispatch(selectedContact(contactId))
-    // }
-  const handleUpdate =async (e)=>{
-      e.preventDefault();
-      dispatch(updateContact({
-        name:values.uname,
-        avatar:values.uimage,
-        phone:values.uphone,
-        email:values.uemail,
-        Company:values.uCompany,
-        Title:values.uTitle,
-        Group:values.uGroup,
-      }))
-      // if(contact){
-      // dispatch(updateContact({id:contact._id,...values}))
-      // }else{
-      //   const newContactId = await dispatch(createContact(values));
-      //   if (newContactId) {
-      //     newContactId(newContactId); // Store the generated _id
-      //   }
-      // }
-      navigate("/")
-  }
+  
+  
+// const refresh=()=>window.location.reload(true)
+const handleUpdate=(e)=>{
+ dispatch(updateContacts({values}))
+ dispatch(updateContact({id,values}))
+ console.log(dispatch(updateContact({id,values}))
+ 
+ );
+  navigate('/')
+}
+  const handleClearAll = () => {
+    // dispatch(clearCurrent());
+}
+
   return (
     <Container >
-    <h2 style={{color:'green'}}>Create Contact</h2>
+    <h2 style={{color:'green'}}>edit Contact</h2>
     <p>
     Liet telt zoo veel zoo elk lang ter iets. Gezegend kolonist lot rug genoemde weg dikwijls laatsten. Ketting dik tienden luister zij van meestal. Zes met dik tin rijken hoopen tonnen. Snelleren nabijheid gif een inlandsen dit onzuivere sultanaat.
     </p>
+ 
     <Form onSubmit={handleUpdate} >
       <Col md={4}>
       <Form.Control 
         type="text" 
         placeholder="Name" 
+        name="name"
         style={custFormControl}
-        onChange={(e)=>setValues.uname(e.target.value)}
-        value={values.uname}
+        onChange={(e)=>setValues({...values,name:e.target.value})}
+        value={values.name}
         />
 
       <Form.Control 
         type="text"  
         placeholder="Photo Url" 
         style={custFormControl}
-        onChange={(e)=>setValues.uimage(e.target.value)}
-        value={values.uimage}/>
+        onChange={(e)=>setValues({...values,avatar:e.target.value})}
+        value={values.avatar}
+        />
 
       <Form.Control 
         type="text" 
         placeholder="Mobile" 
+        name='phone'
         style={custFormControl}
-        onChange={(e)=>setValues.uphone(e.target.value)}
-        value={values.uphone}/>
+        onChange={(e)=>setValues({...values,phone:e.target.value})}
+        value={values.phone}
+        />
 
       <Form.Control 
         type="email" 
         placeholder="Email" 
+        name='email'
         style={custFormControl}
-        onChange={(e)=>setValues.uemail(e.target.value)}
-        value={values.uemail}/>
+        onChange={(e)=>setValues({...values,email:e.target.value})}
+        value={values.email}
+        />
 
       <Form.Control 
         type="text" 
         placeholder="Company" 
+        name='Company'
         style={custFormControl}
-        onChange={(e)=>setValues.uCompany(e.target.value)}
-        value={values.uCompany}/>
+        onChange={(e)=>setValues({...values,Company:e.target.value})}
+        value={values.Company}
+        />
 
       <Form.Control 
         type="text" 
         placeholder="Title" 
+        name='Title'
         style={custFormControl}
-        onChange={(e)=>setValues.uTitle(e.target.value)}
-        value={values.uTitle}/>
+        onChange={(e)=>setValues({...values,Title:e.target.value})}
+        value={values.Title}
+        />
 
       <Form.Select
-        onChange={(e)=>setValues.uGroup(e.target.value)}
-        value={values.uGroup}
+       onChange={(e)=>setValues({...values,Group:e.target.value})}
+       value={values.Group}
       >
         <option>Group by...</option>
         <option value='Collegue'>Collegue</option>
@@ -156,9 +159,12 @@ useEffect(()=>{
         <option value='Social'>Social</option>
       </Form.Select>
       </Col>
-      <Btn  type ="submit" name={'Update'} bg={'green'} color={'white'} marg={'20px 10px'}/* onClick={()=>loading==false?console.log("Updated"):navigate("/")}*/ />
-      <Btn name={'Cancel'} bg={'black'} color={'white'} marg={'20px 30px'} onClick={()=>navigate("/")}/>
+      <Btn  type ="submit" name={'Update Contact'} bg={'green'} color={'white'} marg={'20px 10px'} onClick={handleUpdate}/>
+      <Btn name={'Clear Fields'} bg={'black'} color={'white'} marg={'20px 30px'} onClick={handleClearAll}/>
+
     </Form>
+    {/* <p>Empty</p>
+    } */}
     {/* {users._id && <p>Updated Contact ID: {users._id}</p>} */}
     {/* {error && <p>{error}</p>} */}
   </Container>

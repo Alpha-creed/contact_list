@@ -6,7 +6,7 @@ const {addContact, getContact, deleteContact, UpdateContact } = require('../cont
 
 router.post('/add-contact',addContact)
       .get('/get-contacts',getContact)
-      .put('/update-contact',UpdateContact)
-      .delete('/delete-income/:id',deleteContact)
+      .put('/update-contact/:id',UpdateContact)
+      .delete('/delete-contact/:id',deleteContact)
 
-module.exports = router
+module.exports = router 

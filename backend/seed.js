@@ -23,7 +23,7 @@ async function main(){
                 Company:faker.company.name(),
                 Title:faker.person.jobTitle(),
                 Group:faker.person.jobDescriptor(),
-                image:faker.image.avatar(),
+                avatar:faker.image.avatar(),
             }
             contacts.push(newContact);
             console.log("Contact pushed:",newContact);

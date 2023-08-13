@@ -5,13 +5,14 @@ import Btn from './elements/Button'
 import ViewItem from './ViewItem'
 import { Button, Col, Form, Container, Row } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
-import {setContacts, setSelectedContact,getContact} from '../redux/features/contactSlice'
+import {setContacts, setSelectedContact,getContact, getContacts, deleteContact} from '../redux/features/contactSlice'
 import {useDispatch,useSelector} from 'react-redux'
+import axios from 'axios'
 
 const Home = () => {
     const [contact,setContacts] = useState([]);
     const navigate=useNavigate()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const myHead ={
         display:'flex',
@@ -24,27 +25,15 @@ const Home = () => {
     }
 
     const customInput={
-        width: '500px',      // Adjust the width as needed
-    height: '45px',      // Adjust the height as needed
-    fontSize: '15px',    // Adjust the font size as needed
+        width: '500px',      
+    height: '45px',      
+    fontSize: '15px',    
     padding: '4px 8px',
     }
-    const users = useSelector(state=>state.contact);
+    const allContacts = useSelector(state=>state.contact.contact);
 
-    useEffect(()=>{
-        async function fetchdata(){
-            try{
-                const res= await fetch("http://localhost:5000/api/get-contacts");            
-                const contact_list = await res.json();
-                // console.log(contact_list);
-                console.log(users.contact);
-                setContacts(contact_list);
-            }catch(error){
-                console.log(error);
-            }
-        }
-            fetchdata();
-    },[])
+
+  
 
 
   return (
@@ -67,11 +56,11 @@ const Home = () => {
       <br/>
       <Row >
         {
-            contact.length>0 && contact.map((cont,index)=>{
+            allContacts.length>0 && allContacts.map((cont,index)=>{
                 return(
                     <Col key={index} md={5}>
                     <div >
-                        <ViewItem key={index} Contacts={cont} edit={cont._id}/>
+                        <ViewItem key={index} Contacts={cont} edit={cont.id} view={cont.id} del={cont.id}/>
                     </div>
                     </Col>
                 )
