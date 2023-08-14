@@ -43,8 +43,8 @@ const ViewItem = ({Contacts,del,view,edit}) => {
         <p>Email: {Contacts.email}</p>
       </div>
       <div style={myBtn}>
-      <Link to={`/view/${view}`}> <Btn  marg={"2px"} icon={viewIcon} bg={'yellow'} color={'black'} onClick={view}/></Link>
-       <Link to={`/update-contact/${edit}`}><Btn marg={"2px"} icon={editIcon} bg={'blue'} color={'white'} onClick={edit}/></Link>
+      <Link to={`/view/${view}`}> <Btn  marg={"2px"} icon={viewIcon} bg={'yellow'} color={'black'} onClick={()=>view}/></Link>
+       <Link to={`/update-contact/${edit}`}><Btn marg={"2px"} icon={editIcon} bg={'blue'} color={'white'} onClick={()=>edit}/></Link>
        <Btn  marg={"2px"} icon={deleteIcon} bg={'red'} color={'white'}  onClick={del} />
       </div>
     </div>

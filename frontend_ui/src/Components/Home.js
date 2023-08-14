@@ -13,6 +13,7 @@ const Home = () => {
     const [contact,setContacts] = useState([]);
     const navigate=useNavigate()
     const dispatch = useDispatch()
+    const [searchResults, setSearchResults] = useState([]);
 
     const myHead ={
         display:'flex',
@@ -38,6 +39,9 @@ const Home = () => {
         dispatch(deleteContact(id))
         dispatch(deleteContacts(id))
         refresh()
+    }
+    const handleSearch=(query)=>{
+        //TODO:Work on the search results
     }
     
 

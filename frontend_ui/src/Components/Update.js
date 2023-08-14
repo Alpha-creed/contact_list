@@ -32,15 +32,6 @@ const Update = () => {
       })
       }
     },[contacts])
-// const [Name,setName] = useState(contacts.name)
-// const [avatar,setAvatar] = useState(contacts.avatar)
-// const [phone,setPhone] = useState(contacts.phone)
-// const [email,setEmail] = useState(contacts.email)
-// const [Company,setCompany] = useState(contacts.Company)
-// const [Title,setTitle] = useState(contacts.Title)
-// const [Group,setGroup] = useState(contacts.Group)
-
-
 
   const [values,setValues] = useState({
     id:id,
@@ -71,14 +62,12 @@ const Update = () => {
 
   
   
-// const refresh=()=>window.location.reload(true)
+const refresh=()=>window.location.reload(true)
 const handleUpdate=(e)=>{
  dispatch(updateContacts({values}))
- dispatch(updateContact({id,values}))
- console.log(dispatch(updateContact({id,values}))
- 
- );
-  navigate('/')
+ dispatch(updateContact({id,values})) 
+ navigate("/")
+refresh()
 }
   const handleClearAll = () => {
     // dispatch(clearCurrent());
