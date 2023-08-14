@@ -39,7 +39,7 @@ exports.getContact = async(req,res)=>{
 } 
 
 exports.deleteContact = async (req,res)=>{
-    const {id} = req.params;
+    const id = req.params.id;
     ContactSchema.findByIdAndDelete({_id:id})
         .then(res=>res.json(res)
         )

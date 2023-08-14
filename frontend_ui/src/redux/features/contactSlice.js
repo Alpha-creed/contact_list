@@ -53,7 +53,7 @@ export const updateContact = createAsyncThunk("contact/updateContact",async({id,
 
 export const deleteContact = createAsyncThunk("contact/delContacts",async (id)=>{
     try{
-        const res = await axios.delete(`http://localhost:5000/api/delete-contact/${id}`)
+        const res = await axios.delete(`http://localhost:5000/api/delete-contact/${encodeURIComponent(id)}`)
         return res.id;
     }catch(error){
       throw error;
@@ -100,7 +100,10 @@ const contactSlice = createSlice({
         },
         deleteContacts:(state,action)=>{
           const id=action.payload.id;
-          state.contact=state.contact.filter(u=>u.id!==id)  
+          const uu = state.contact.find(contact =>contact.id == id);
+          if(uu){
+              return state.filter(f=>f.id != id);
+          }
         }
        
     },
@@ -143,7 +146,7 @@ const contactSlice = createSlice({
         },
         [deleteContact.fulfilled]:(state,action)=>{
             state.loading='false';
-            state.contact = state.contact.filter(cont => cont._id !== action.payload);
+            state.contact = action.payload;
         },
         [deleteContact.rejected]:(state,action)=>{
             state.loading='false';

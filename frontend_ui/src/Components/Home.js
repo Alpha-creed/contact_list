@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Header from './Header'
-import { newIcon } from '../utils/assest'
+import { deleteIcon, newIcon } from '../utils/assest'
 import Btn from './elements/Button'
 import ViewItem from './ViewItem'
 import { Button, Col, Form, Container, Row } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
-import {setContacts, setSelectedContact,getContact, getContacts, deleteContact} from '../redux/features/contactSlice'
+import {setContacts, setSelectedContact,getContact, getContacts, deleteContact, deleteContacts} from '../redux/features/contactSlice'
 import {useDispatch,useSelector} from 'react-redux'
 import axios from 'axios'
 
@@ -31,9 +31,15 @@ const Home = () => {
     padding: '4px 8px',
     }
     const allContacts = useSelector(state=>state.contact.contact);
+     const refresh=()=>window.location.reload(true)
 
-
-  
+    const handleDel=(id)=>{
+        console.log("it gone",id);
+        dispatch(deleteContact(id))
+        dispatch(deleteContacts(id))
+        refresh()
+    }
+    
 
 
   return (
@@ -60,9 +66,10 @@ const Home = () => {
                 return(
                     <Col key={index} md={5}>
                     <div >
-                        <ViewItem key={index} Contacts={cont} edit={cont.id} view={cont.id} del={cont.id}/>
+                        <ViewItem key={index} Contacts={cont} edit={cont.id} view={cont.id} del={()=>handleDel(cont.id)}/>
                     </div>
                     </Col>
+
                 )
             })
         }
